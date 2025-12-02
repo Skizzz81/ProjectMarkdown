@@ -1,6 +1,15 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.editor-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.editor-container,
+.preview-container {
+  flex: 1;
+  padding: 20px;
+}
+
+textarea {
+  width: 100%;
+  height: 100%;
 }
