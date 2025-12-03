@@ -1,7 +1,8 @@
 import { useState, useEffect }  from 'react';
-import FileTree                 from '../../components/Sidebar/FileTree';
-import MarkdownEditor           from '../../components/Editor/MarkdownEditor';
-import MarkdownPreview          from '../../components/Editor/MarkdownPreview';
+import FileTree                 from '../components/Sidebar/FileTree';
+import MarkdownEditor           from '../components/Editor/MarkdownEditor';
+import MarkdownPreview          from '../components/Editor/MarkdownPreview';
+import NavBar                   from '../components/NavBar/NavBar';
 
 export default function Home(){
   // Charger le texte sauvegardé au démarrage
@@ -39,28 +40,34 @@ export default function Home(){
 
   return (
     <>
-      <h1>Éditeur MarkDown</h1>
+      <header>
+        <NavBar />
+      </header>
+      <main>
+        <h1>Éditeur MarkDown</h1>
 
-      <div className="app_container">
-        <aside className="sidebar">
-          <h2>Mes fichiers</h2>
+        <div className="app_container">
+          <aside className="sidebar">
+            <h2>Mes fichiers</h2>
 
-          <FileTree
-            files={files}
-            activeFileId={activeFileId}
-            onFileSelect={setActiveFileId}
-          />
-        </aside>
+            <FileTree
+              files={files}
+              activeFileId={activeFileId}
+              onFileSelect={setActiveFileId}
+            />
+          </aside>
 
-        <div className="editor-layout">
-          <div className="editor-container">
-            <MarkdownEditor value={activeFile.content} onChange={changeContent} />
-          </div>
-          <div className="preview-container">
-            <MarkdownPreview text={activeFile.content} />
+          <div className="editor-layout">
+            <div className="editor-container">
+              <MarkdownEditor value={activeFile.content} onChange={changeContent} />
+            </div>
+            <div className="preview-container">
+              <MarkdownPreview text={activeFile.content} />
+            </div>
           </div>
         </div>
-      </div>
+      </main>
+      <footer></footer>
     </>
   );
 };
