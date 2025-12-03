@@ -1,7 +1,7 @@
 import { useState, useEffect }  from 'react';
-import FileTree                 from '../../components/Sidebar/FileTree';
-import MarkdownEditor           from '../../components/Editor/MarkdownEditor';
-import MarkdownPreview          from '../../components/Editor/MarkdownPreview';
+import FileTree                 from '../components/Sidebar/FileTree';
+import MarkdownEditor           from '../components/Editor/MarkdownEditor';
+import MarkdownPreview          from '../components/Editor/MarkdownPreview';
 
 export default function Home(){
   // Charger le texte sauvegardé au démarrage
