@@ -8,13 +8,20 @@ export default function Home(){
   const [files, setFiles] = useState(() => {
     const savedFiles = localStorage.getItem('markdown-files');
     return savedFiles ? JSON.parse(savedFiles) : [
-      { id: 1, name: "notes.md", content: "content 1 ", type: 'file', parentID: 'null' },
-      { id: 2, name: "todo.md", content: "content 2", type: 'file', parentID: 'null' },
-      { id: 3, name: "ideas.md", content: "content 3", type: 'file', parentID: 'null' }
-    ];
+    { id: 1, name: "Projets", type: 'folder', parentId: null },
+    { id: 2, name: "Personnel", type: 'folder', parentId: null },
+    { id: 3, name: "notes.md", content: "# Notes du projet", type: 'file', parentId: 1 },
+    { id: 4, name: "todo.md", content: "# Todo list", type: 'file', parentId: 1 },
+    { id: 5, name: "ideas.md", content: "# Mes idées", type: 'file', parentId: 2 },
+    { id: 6, name: "readme.md", content: "# Readme", type: 'file', parentId: null },
+    { id: 7, name: "tuto.md", content: "# Tuto", type: 'file', parentId: null },
+    { id: 8, name: "Vacances", type: 'folder', parentId: 2 },
+    { id: 9, name: "2024.md", content: "# Vacances 2024", type: 'file', parentId: 8 },
+    { id: 10, name: "2025.md", content: "# Vacances 2025", type: 'file', parentId: 8 }
+  ];
   });
 
-  const [activeFileId, setActiveFileId] = useState(1);
+  const [activeFileId, setActiveFileId] = useState(3);
 
   //  trouver le fichier Actif 
   const activeFile = files.find(file => file.id === activeFileId);
