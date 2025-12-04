@@ -5,6 +5,7 @@ export default function NavBar(){
     return (
         <nav>
             <span><NavLink to='/'>Éditeur</NavLink></span>
+            <span><NavLink to='/images'>Bibliothèque d'images</NavLink></span>
         </nav>
     );
 };
