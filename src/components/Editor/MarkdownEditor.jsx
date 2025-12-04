@@ -4,6 +4,7 @@ export default function MarkdownEditor({ value, onChange }) {
     <textarea 
       value={value}
       onChange={(e) => onChange(e.target.value)}
+      placeholder="Écrivez ici votre contenu en Markdown..."
     />
     
   );

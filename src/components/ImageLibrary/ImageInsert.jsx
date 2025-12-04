@@ -5,8 +5,7 @@ export default function ImageInsert({ onInsertImage }) {
   const images = useSelector(state => state.images.library);
 
   const handleInsertImage = (image) => {
-    // Créer la syntaxe Markdown pour insérer l'image
-    const markdownSyntax = `![${image.name}](${image.base64})`;
+    const markdownSyntax = `![${image.name}](image:${image.id})`;
     onInsertImage(markdownSyntax);
   };
 

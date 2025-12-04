@@ -38,7 +38,7 @@ export default function Home(){
   // Insérer une image dans le contenu du fichier actif
   const handleInsertImage = (markdownSyntax) => {
     const currentContent = activeFile?.content || '';
-    const newContent = currentContent + '\n' + markdownSyntax;
+    const newContent = currentContent + '\n\n' + markdownSyntax + '\n\n';
     changeContent(newContent);
   };
 
@@ -53,11 +53,26 @@ export default function Home(){
         <NavBar />
       </header>
       <main>
-        <h1>Éditeur MarkDown</h1>
+        <h1 style={{ 
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          fontSize: '2.5rem',
+          fontWeight: '700',
+          margin: '1rem 0',
+          padding: '0 1rem'
+        }}>Éditeur MarkDown</h1>
 
         <div className="app_container">
           <aside className="sidebar">
-            <h2>Mes fichiers</h2>
+            <h2 style={{
+              color: '#495057',
+              fontSize: '1.2rem',
+              fontWeight: '600',
+              marginBottom: '1rem',
+              paddingBottom: '0.5rem',
+              borderBottom: '3px solid #667eea'
+            }}>📁 Mes fichiers</h2>
 
             <FileTree
               files={files}
