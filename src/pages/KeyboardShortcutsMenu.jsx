@@ -7,9 +7,9 @@ import MarkdownPreview          from '../components/Editor/MarkdownPreview';
 export default function KeyboardShortcutsMenu(){
     // Defining default shortcuts
     const default_shortcuts = [
-        {id: 1, name: "Bold",       content: "Content 1",   type: 'file',   shortcut: 'Ctrl+B', parentID: 'null'},
-        {id: 2, name: "Italic",     content: "Content 2",   type: 'file',   shortcut: 'Ctrl+I', parentID: 'null'},
-        {id: 3, name: "Title 1",    content: "Content 3",   type: 'file',   shortcut: 'Ctrl+1', parentID: 'null'}
+        {id: 1, name: "Bold",       content: "****",    type: 'file',   shortcut: 'Ctrl+B', parentID: 'null'},
+        {id: 2, name: "Italic",     content: "**",      type: 'file',   shortcut: 'Ctrl+I', parentID: 'null'},
+        {id: 3, name: "Title 1",    content: "# ",      type: 'file',   shortcut: 'Ctrl+1', parentID: 'null'}
     ]
 
     // Loading the saved shortcuts at startup
