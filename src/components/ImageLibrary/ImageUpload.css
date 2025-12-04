@@ -1,0 +1,55 @@
+.image-upload {
+  margin-bottom: 1.5rem;
+}
+
+.upload-label {
+  display: block;
+  cursor: pointer;
+}
+
+.upload-box {
+  border: 2px dashed #1976d2;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.2s ease;
+  background-color: #f5f9ff;
+}
+
+.upload-label:hover .upload-box {
+  border-color: #1565c0;
+  background-color: #e3f2fd;
+  transform: scale(1.02);
+}
+
+.upload-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.upload-box h4 {
+  margin: 0.5rem 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.upload-box p {
+  margin: 0.25rem 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.uploading {
+  display: block;
+  margin-top: 0.5rem;
+  color: #ff9800;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.upload-hint {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #666;
+  text-align: center;
+}

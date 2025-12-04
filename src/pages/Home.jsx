@@ -1,10 +1,22 @@
 import { useState, useEffect }  from 'react';
+import { useDispatch } from 'react-redux';
 import FileTree                 from '../components/Sidebar/FileTree';
 import MarkdownEditor           from '../components/Editor/MarkdownEditor';
 import MarkdownPreview          from '../components/Editor/MarkdownPreview';
 import NavBar                   from '../components/NavBar/NavBar';
+import ImageUpload              from '../components/ImageLibrary/ImageUpload';
+import ImageLibrary             from '../components/ImageLibrary/ImageLibrary';
+import ImageInsert              from '../components/ImageLibrary/ImageInsert';
+import { loadLibraryFromLocalStorage } from '../store/imageSlice';
 
 export default function Home(){
+  const dispatch = useDispatch();
+
+  // Charger la bibliothèque d'images au démarrage
+  useEffect(() => {
+    dispatch(loadLibraryFromLocalStorage());
+  }, [dispatch]);
+
   // Charger le texte sauvegardé au démarrage
   const [files, setFiles] = useState(() => {
     const savedFiles = localStorage.getItem('markdown-files');
@@ -25,6 +37,13 @@ export default function Home(){
     setFiles(files.map(file => file.id === activeFileId ? { ...file, content: newContent } : file
     ));
   }
+
+  // Insérer une image dans le contenu du fichier actif
+  const handleInsertImage = (markdownSyntax) => {
+    const currentContent = activeFile?.content || '';
+    const newContent = currentContent + '\n' + markdownSyntax;
+    changeContent(newContent);
+  };
 
   // Sauvegarder automatiquement à chaque modification
   useEffect(() => {
@@ -48,14 +67,20 @@ export default function Home(){
               activeFileId={activeFileId}
               onFileSelect={setActiveFileId}
             />
+
+            <hr style={{ margin: '1rem 0' }} />
+
+            <ImageUpload />
+            <ImageLibrary />
+            <ImageInsert onInsertImage={handleInsertImage} />
           </aside>
 
           <div className="editor-layout">
             <div className="editor-container">
-              <MarkdownEditor value={activeFile.content} onChange={changeContent} />
+              <MarkdownEditor value={activeFile?.content || ''} onChange={changeContent} />
             </div>
             <div className="preview-container">
-              <MarkdownPreview text={activeFile.content} />
+              <MarkdownPreview text={activeFile?.content || ''} />
             </div>
           </div>
         </div>
