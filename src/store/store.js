@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import filesReducer from './slices/files';
-import imageReducer from './imageSlice';
+import imageReducer from './slices/images';
 
 // Middleware pour sauvegarder automatiquement dans localStorage
 const localStorageMiddleware = (store) => (next) => (action) => {

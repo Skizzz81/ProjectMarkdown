@@ -5,12 +5,11 @@ import FileTree from '../components/Sidebar/FileTree';
 import Editor from '../components/Editor/Editor';
 import NavBar from '../components/NavBar/NavBar';
 import ImageInsert from '../components/ImageLibrary/ImageInsert';
-import { loadLibraryFromLocalStorage } from '../store/imageSlice';
+import { loadLibraryFromLocalStorage } from '../store/slices/images';
 import { updateFileContent } from '../store/slices/files';
 
 export default function Home() {
   const dispatch = useDispatch();
-  
   // Charger la bibliothèque d'images au démarrage
   useEffect(() => {
     dispatch(loadLibraryFromLocalStorage());

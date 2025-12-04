@@ -8,6 +8,9 @@ export default function FileTree() {
     const openFolders = useSelector(state => state.files.openFolders); 
     const dispatch = useDispatch();
 
+    console.log('FileTree - files:', files);
+    console.log('FileTree - activeFileId:', activeFileId);
+
     const ItemClick = (item) => {
         if (item.type === 'folder') {
             dispatch(toggleFolder(item.id));

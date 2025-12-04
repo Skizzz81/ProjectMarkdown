@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addImage } from '../../store/imageSlice';
+import { addImage } from '../../store/slices/images';
 import './ImageUpload.css';
 
 export default function ImageUpload() {

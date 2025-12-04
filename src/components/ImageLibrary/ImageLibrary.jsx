@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteImage, renameImage, clearLibrary, importLibrary } from '../../store/imageSlice';
+import { deleteImage, renameImage, clearLibrary, importLibrary } from '../../store/slices/images';
 import './ImageLibrary.css';
 
 export default function ImageLibrary() {
@@ -79,7 +79,7 @@ export default function ImageLibrary() {
         <div className="library-controls">
           <label className="btn btn-import">
             Importer
-            <input type="file" accept=".imgs.mdlc" onChange={handleImport} hidden />
+            <input type="file" accept=".imgs.mdlc,.json,text/*" onChange={handleImport} hidden />
           </label>
           <button className="btn btn-export" onClick={handleExport} disabled={images.length === 0}>
             Exporter
@@ -109,8 +109,8 @@ export default function ImageLibrary() {
                       placeholder="Nouveau nom..."
                     />
                     <div className="rename-buttons">
-                      <button className="btn-save" onClick={() => handleRenameImage(image.id)}>✓ Valider</button>
-                      <button className="btn-cancel" onClick={() => setEditingId(null)}>✕ Annuler</button>
+                      <button className="btn-save" onClick={() => handleRenameImage(image.id)}>Valider</button>
+                      <button className="btn-cancel" onClick={() => setEditingId(null)}>Annuler</button>
                     </div>
                   </div>
                 ) : (
