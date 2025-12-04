@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import ImageUpload from '../components/ImageLibrary/ImageUpload';
 import ImageLibrary from '../components/ImageLibrary/ImageLibrary';
 import NavBar from '../components/NavBar/NavBar';
-import { loadLibraryFromLocalStorage } from '../store/imageSlice';
+import { loadLibraryFromLocalStorage } from '../store/slices/images';
 
 export default function ImageLibraryPage() {
   const dispatch = useDispatch();

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteImage, renameImage, clearLibrary, importLibrary } from '../../store/imageSlice';
+import { deleteImage, renameImage, clearLibrary, importLibrary } from '../../store/slices/images';
 import './ImageLibrary.css';
 
 export default function ImageLibrary() {
