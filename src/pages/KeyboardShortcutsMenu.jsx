@@ -28,13 +28,13 @@ export default function KeyboardShortcutsMenu(){
     const active_shortcut = shortcuts.find(file => file.id === active_shortcut_id);
 
     // Modifying the current shortcut
-    const modifyShortcut = (shortcut_data) => {
+    const modifyShortcut = (shortcut_content) => {
         const new_shortcut = {
             id:         active_shortcut_id,
-            name:       shortcut_data.name,
-            content:    '',
+            name:       active_shortcut.name,
+            content:    shortcut_content,
             type:       'file',
-            shortcut:   shortcut_data.shortcut,
+            shortcut:   active_shortcut.shortcut,
             parentID:   'null'
         };
         setShortcuts(shortcuts.map(file => file.id === active_shortcut_id ? new_shortcut : file));
