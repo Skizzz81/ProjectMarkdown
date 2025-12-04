@@ -53,6 +53,7 @@ export default function KeyboardShortcutsMenu(){
                 </aside>
                 <div className="editor-layout">
                     <div className="editor-container">
+                        Raccourci clavier affecté : <strong>{active_shortcut.shortcut}</strong> <a style={{marginLeft: "20px"}} href="#">Modifier</a>
                         <MarkdownEditor value={active_shortcut.content} onChange={modifyShortcut} />
                     </div>
                     <div className="preview-container">
