@@ -1,5 +1,6 @@
 import {createBrowserRouter, RouterProvider}    from 'react-router-dom';
 import Home                                     from './pages/Home';
+import ImageLibraryPage                         from './pages/ImageLibraryPage';
 import './App.css';
 
 const router = createBrowserRouter([
@@ -7,6 +8,10 @@ const router = createBrowserRouter([
         path: '/',
         element: <Home/>,
         errorElement: <div>Error</div>,
+    },
+    {
+        path: '/images',
+        element: <ImageLibraryPage/>,
     },
 ]);
 

@@ -23,6 +23,13 @@ const imageSlice = createSlice({
       const id = action.payload;
       state.library = state.library.filter(img => img.id !== id);
     },
+    renameImage: (state, action) => {
+      const { id, name } = action.payload;
+      const image = state.library.find(img => img.id === id);
+      if (image) {
+        image.name = name;
+      }
+    },
     clearLibrary: (state) => {
       state.library = [];
       state.nextId = 1;
@@ -47,5 +54,5 @@ const imageSlice = createSlice({
   },
 });
 
-export const { addImage, deleteImage, clearLibrary, importLibrary, loadLibraryFromLocalStorage } = imageSlice.actions;
+export const { addImage, deleteImage, renameImage, clearLibrary, importLibrary, loadLibraryFromLocalStorage } = imageSlice.actions;
 export default imageSlice.reducer;

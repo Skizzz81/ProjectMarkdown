@@ -4,15 +4,12 @@ import FileTree                 from '../components/Sidebar/FileTree';
 import MarkdownEditor           from '../components/Editor/MarkdownEditor';
 import MarkdownPreview          from '../components/Editor/MarkdownPreview';
 import NavBar                   from '../components/NavBar/NavBar';
-import ImageUpload              from '../components/ImageLibrary/ImageUpload';
-import ImageLibrary             from '../components/ImageLibrary/ImageLibrary';
 import ImageInsert              from '../components/ImageLibrary/ImageInsert';
 import { loadLibraryFromLocalStorage } from '../store/imageSlice';
 
 export default function Home(){
   const dispatch = useDispatch();
 
-  // Charger la bibliothèque d'images au démarrage
   useEffect(() => {
     dispatch(loadLibraryFromLocalStorage());
   }, [dispatch]);
@@ -70,8 +67,7 @@ export default function Home(){
 
             <hr style={{ margin: '1rem 0' }} />
 
-            <ImageUpload />
-            <ImageLibrary />
+            {/* Affichage uniquement des images et insertion */}
             <ImageInsert onInsertImage={handleInsertImage} />
           </aside>
 

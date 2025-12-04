@@ -35,13 +35,6 @@ export default function ImageUpload() {
             size: file.size,
             uploadDate: new Date().toISOString(),
           }));
-          setTimeout(() => {
-            const state = {
-              library: [...imageLibrary],
-              nextId,
-            };
-            localStorage.setItem('markdown-images', JSON.stringify(state));
-          }, 0);
         } catch (error) {
           alert('Erreur lors de la conversion en Base64: ' + error.message);
         } finally {
