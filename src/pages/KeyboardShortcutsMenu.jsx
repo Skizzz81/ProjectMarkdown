@@ -22,13 +22,23 @@ export default function KeyboardShortcutsMenu(){
         ];
     });
     const [active_shortcut_id, setActiveShortcutId] = useState(1);
+    const [show_dialog, setShowDialog]              = useState(false);
 
     // Finding the active shortcut
     const active_shortcut = shortcuts.find(file => file.id === active_shortcut_id);
 
     // Modifying the current shortcut
-    const modifyShortcut = (newShortcut) => {
-        setShortcuts(shortcuts.map(file => file.id === active_shortcut_id ? { ...file, content: newShortcut } : file));
+    const modifyShortcut = (shortcut_data) => {
+        const new_shortcut = {
+            id:         active_shortcut_id,
+            name:       shortcut_data.name,
+            content:    '',
+            type:       'file',
+            shortcut:   shortcut_data.shortcut,
+            parentID:   'null'
+        };
+        setShortcuts(shortcuts.map(file => file.id === active_shortcut_id ? new_shortcut : file));
+        setShowDialog(false);
     };
 
     // Automatically save on every modification
@@ -58,6 +68,7 @@ export default function KeyboardShortcutsMenu(){
                             <a
                                 style   = {{marginLeft: "20px"}}
                                 href    = "#"
+                                onClick = {(e) => {e.preventDefault(); setShowDialog(true);}}
                             >Modifier</a>
                         )}
                         <MarkdownEditor value={active_shortcut.content} onChange={modifyShortcut} />
@@ -69,5 +80,6 @@ export default function KeyboardShortcutsMenu(){
             </div>
         </main>
         <footer></footer>
+        {show_dialog && <KeyboardShortcutInput onSave={modifyShortcut} onClose={() => setShowDialog(false)} shortcut_data={active_shortcut} />}
     </>);
 };
