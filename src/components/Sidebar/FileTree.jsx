@@ -1,54 +1,70 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setActiveFile, toggleFolder } from '../../store/slices/files';
+import { addFile, addFolder } from '../../store/slices/files';
+import FileItem from './FileItem';
 
 export default function FileTree() {
-  
-    const files = useSelector(state => state.files.list);
-    const activeFileId = useSelector(state => state.files.activeFileId);
-    const openFolders = useSelector(state => state.files.openFolders); 
     const dispatch = useDispatch();
+    const files = useSelector(state => state.files.list);
 
-    console.log('FileTree - files:', files);
-    console.log('FileTree - activeFileId:', activeFileId);
+    // Récupérer les éléments à la racine
+    const rootItems = files.filter(file => file.parentId === null);
 
-    const ItemClick = (item) => {
-        if (item.type === 'folder') {
-            dispatch(toggleFolder(item.id));
-        } else {
-            dispatch(setActiveFile(item.id));
-        }
-    };
+    // Récupérer tous les dossiers 
+    const folders = files.filter(file => file.type === 'folder');
 
-    // Affichage de dossiers et fichiers hierarchiquement
-    const renderItem = (item, level = 0) => {
-        const isFolder = item.type === 'folder';
-        const isOpen = openFolders.includes(item.id);
-        const childrens = files.filter(file => file.parentId === item.id);
+    const handleAddFile = () => {
+        const name = prompt('Nom du fichier (ex: notes.md):');
+        if (!name) return;
 
-        return (
-            <div key={item.id}>
-                <div
-                    onClick={() => ItemClick(item)}
-                    className={`file-item ${!isFolder && activeFileId === item.id ? 'active' : ''}`}
-                    style={{ paddingLeft: `${level * 20}px` }}
-                >
-                    {isFolder ? '📁' : '📄'} {item.name}
-                </div>
-
-                {isFolder && isOpen && childrens.length > 0 && (
-                    <div>
-                        {childrens.map(child => renderItem(child, level + 1))}
-                    </div>
-                )}
-            </div>
+        // Demander le dossier parent
+        const foldersList = folders.map(f => `${f.id}: ${f.name}`).join('\n');
+        const parentIdStr = prompt(
+            `Dossier parent (ID) ?\nLaisser vide pour la racine\n\nDossiers disponibles:\n${foldersList}`
         );
+        
+        const parentId = parentIdStr ? parseInt(parentIdStr) : null;
+        dispatch(addFile({ name, parentId }));
     };
 
-    const itemsParent = files.filter(file => file.parentId === null);
+    const handleAddFolder = () => {
+        const name = prompt('Nom du dossier:');
+        if (!name) return;
+
+        // Demander le dossier parent
+        const foldersList = folders.map(f => `${f.id}: ${f.name}`).join('\n');
+        const parentIdStr = prompt(
+            `Dossier parent (ID) ?\nLaisser vide pour la racine\n\nDossiers disponibles:\n${foldersList}`
+        );
+        
+        const parentId = parentIdStr ? parseInt(parentIdStr) : null;
+        dispatch(addFolder({ name, parentId }));
+    };
 
     return (
         <div>
-            {itemsParent.map(item => renderItem(item, 0))}
+            <div style={{ 
+                padding: '10px', 
+                borderBottom: '1px solid #ccc',
+                display: 'flex',
+                gap: '10px'
+            }}>
+                <button onClick={handleAddFile} style={{ cursor: 'pointer' }}>
+                    📄 Nouveau fichier
+                </button>
+                <button onClick={handleAddFolder} style={{ cursor: 'pointer' }}>
+                    📁 Nouveau dossier
+                </button>
+            </div>
+
+            <div>
+                {rootItems.map(item => (
+                    <FileItem 
+                        key={item.id} 
+                        item={item} 
+                        level={0}
+                    />
+                ))}
+            </div>
         </div>
     );
 }
