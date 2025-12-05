@@ -2,8 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Fonction pour charger les fichiers depuis localStorage
 const loadFilesFromStorage = () => {
-
-
     const saved = localStorage.getItem('markdown-files');
     if (saved) {
         return JSON.parse(saved);
@@ -31,7 +29,8 @@ const filesSlice = createSlice({
     initialState: {
         list: loadFilesFromStorage(),
         activeFileId: 3,
-        openFolders: []
+        openFolders: [],
+        nextId: 12 
     },
     reducers: {
 
@@ -61,13 +60,36 @@ const filesSlice = createSlice({
             } else {
                 state.openFolders.push(folderId);
             }
-        }
+        },
 
+// Ajouter un nouveau fichier
+        addFile: (state, { payload }) => {
+            const { name, parentId } = payload;
+            state.list.push({
+                id: state.nextId,
+                name: name,
+                type: 'file',
+                content: '# Écrivez ici....',
+                parentId: parentId || null  
+            });
+            state.nextId++; 
+        },
 
+        // Ajouter nouveau dossier 
+           addFolder: (state, { payload }) => {
+            const { name, parentId } = payload;
+            state.list.push({
+                id: state.nextId,
+                name: name,
+                type: 'folder',
+                parentId: parentId || null  
+            });
+            state.nextId++; 
+        },
     }
 });
 
 
 export { filesSlice };
-export const { setActiveFile, updateFileContent, toggleFolder } = filesSlice.actions;
+export const { setActiveFile, updateFileContent, toggleFolder, addFile, addFolder } = filesSlice.actions;
 export default filesSlice.reducer;
