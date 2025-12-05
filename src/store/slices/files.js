@@ -30,16 +30,14 @@ const filesSlice = createSlice({
         list: loadFilesFromStorage(),
         activeFileId: 3,
         openFolders: [],
-        nextId: 12 
+        nextId: 12
     },
     reducers: {
-
         // changer le fichier actif 
         setActiveFile: (state, action) => {
             const { payload } = action;
             state.activeFileId = payload;
         },
-
 
         // modifier le contenu du fichier 
         updateFileContent: (state, action) => {
@@ -62,7 +60,7 @@ const filesSlice = createSlice({
             }
         },
 
-// Ajouter un nouveau fichier
+        // Ajouter un nouveau fichier
         addFile: (state, { payload }) => {
             const { name, parentId, content } = payload;
             state.list.push({
@@ -72,24 +70,49 @@ const filesSlice = createSlice({
                 content: content || '',
                 parentId: parentId || null  
             });
-            state.nextId++; 
+            state.nextId++;
         },
 
         // Ajouter nouveau dossier 
-           addFolder: (state, { payload }) => {
+        addFolder: (state, { payload }) => {
             const { name, parentId } = payload;
             state.list.push({
                 id: state.nextId,
                 name: name,
                 type: 'folder',
-                parentId: parentId || null  
+                parentId: parentId || null
             });
-            state.nextId++; 
+            state.nextId++;
         },
-    }
+
+        // Supprimer un item
+         deleteItems: (state, action) => {
+            const id = action.payload;
+            const findAllChildren = (id) => {
+                const children = state.list.filter(item => item.parentId === id);
+                return children.flatMap(child => [child.id, ...findAllChildren(child.id)]);
+            };
+            const idsToDelete = [id, ...findAllChildren(id)];
+          
+            if (idsToDelete.includes(state.activeFileId)) {
+               alert("Impossible de supprimer le fichier actif !");
+                return;
+            }
+            state.list = state.list.filter(item => !idsToDelete.includes(item.id));
+        },
+
+        // Renommer un item
+        renameItems: (state, action) => {
+            const { id, newName } = action.payload;
+            const item = state.list.find(item => item.id === id);
+            if (item) {
+                item.name = newName;
+            }
+        },
+    },
 });
 
 
 export { filesSlice };
-export const { setActiveFile, updateFileContent, toggleFolder, addFile, addFolder } = filesSlice.actions;
+export const { setActiveFile, updateFileContent, toggleFolder, addFile, addFolder, deleteItems, renameItems } = filesSlice.actions;
 export default filesSlice.reducer;
