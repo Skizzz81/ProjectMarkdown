@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setActiveFile, toggleFolder } from '../../store/slices/files';
+import { deleteItems, renameItems, setActiveFile, toggleFolder } from '../../store/slices/files';
+import './FileItem.css';
 
 export default function FileItem({ item, level = 0 }) {
 
@@ -20,6 +21,19 @@ export default function FileItem({ item, level = 0 }) {
     });
 
 
+    const  handleRenameItem = () => {
+        const newName = prompt('Nouveau nom ?', item.name);
+        if (newName) {
+            dispatch(renameItems({ id: item.id, newName }));
+        }
+    };
+
+     const  handleDeleteItem = () => {
+            dispatch(deleteItems( item.id ));
+        }
+  
+
+
     const handleClick = () => {
         if (isFolder) {
             dispatch(toggleFolder(item.id));
@@ -31,19 +45,28 @@ export default function FileItem({ item, level = 0 }) {
     return (
         <div>
             <div
-                onClick={handleClick}
                 className={`file-item ${!isFolder && activeFileId === item.id ? 'active' : ''}`}
                 style={{ paddingLeft: `${level * 20}px` }}
             >
-                {isFolder ? (isOpen ? '📂' : '📁') : '📄'} {item.name}
+                <span
+                    className="file-item-label"
+                    onClick={handleClick}
+                >
+                    {isFolder ? (isOpen ? '📂' : '📁') : '📄'}
+                    <span className="file-item-name">{item.name}</span>
+                </span>
+                <div className="file-actions">
+                    <button className="file-rename-btn" onClick={handleRenameItem} title="Renommer">✏️</button>
+                    <button className="file-delete-btn" onClick={handleDeleteItem} title="Supprimer">🗑️</button>
+                </div>
             </div>
-            
+
             {isFolder && isOpen && sortedChildrens.length > 0 && (
                 <div>
                     {sortedChildrens.map(child => (
-                        <FileItem 
-                            key={child.id} 
-                            item={child} 
+                        <FileItem
+                            key={child.id}
+                            item={child}
                             level={level + 1}
                         />
                     ))}
