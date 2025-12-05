@@ -20,7 +20,8 @@ export default function FileItem({ item, level = 0 }) {
     });
 
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+        e.stopPropagation(); // Empêcher la propagation de l'événement
         if (isFolder) {
             dispatch(toggleFolder(item.id));
         } else {

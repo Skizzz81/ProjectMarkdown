@@ -58,18 +58,33 @@ export default function ImageLibrary() {
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
-        const data = JSON.parse(event.target?.result);
-        if (data.library && Array.isArray(data.library)) {
-          dispatch(importLibrary(data));
-          alert('Bibliothèque importée avec succès !');
-        } else {
-          alert('Format de fichier invalide. Veuillez importer un fichier de bibliothèque valide.');
+        const content = event.target?.result;
+        if (!content) {
+          alert('Le fichier est vide.');
+          return;
         }
+        
+        const data = JSON.parse(content);
+        
+        if (!data.library || !Array.isArray(data.library)) {
+          alert('Format de fichier invalide. Le fichier doit contenir une propriété "library" avec un tableau d\'images.');
+          return;
+        }
+        
+        dispatch(importLibrary(data));
+        alert(`Bibliothèque importée avec succès ! ${data.library.length} image(s) ajoutée(s).`);
       } catch (error) {
+        console.error('Erreur import:', error);
         alert('Erreur lors de l\'import : ' + error.message);
       }
     };
+    
+    reader.onerror = () => {
+      alert('Erreur lors de la lecture du fichier.');
+    };
+    
     reader.readAsText(file);
+    e.target.value = ''; // Réinitialiser l'input
   };
 
   return (
