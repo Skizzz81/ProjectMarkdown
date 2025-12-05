@@ -3,6 +3,7 @@ import FileTree                 from '../components/Sidebar/FileTree';
 import NavBar                   from '../components/NavBar/NavBar';
 import MarkdownEditor           from '../components/Editor/MarkdownEditor';
 import MarkdownPreview          from '../components/Editor/MarkdownPreview';
+import KeyboardShortcutInput    from '../components/Editor/KeyboardShortcutInput';
 
 export default function KeyboardShortcutsMenu(){
     // Defining default shortcuts
