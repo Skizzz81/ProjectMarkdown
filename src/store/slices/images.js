@@ -35,9 +35,14 @@ const imageSlice = createSlice({
       state.nextId = 1;
     },
     importLibrary: (state, action) => {
-      const { library, nextId } = action.payload;
-      state.library = library;
-      state.nextId = nextId || (library.length > 0 ? Math.max(...library.map(img => img.id)) + 1 : 1);
+      const { library } = action.payload;
+      library.forEach(importedImage => {
+        state.library.push({
+          ...importedImage,
+          id: state.nextId
+        });
+        state.nextId += 1;
+      });
     },
     loadLibraryFromLocalStorage: (state) => {
       const savedLibrary = localStorage.getItem('markdown-images');

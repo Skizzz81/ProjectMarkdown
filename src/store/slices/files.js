@@ -62,13 +62,13 @@ const filesSlice = createSlice({
 
         // Ajouter un nouveau fichier
         addFile: (state, { payload }) => {
-            const { name, parentId } = payload;
+            const { name, parentId, content } = payload;
             state.list.push({
                 id: state.nextId,
                 name: name,
                 type: 'file',
-                content: '# Écrivez ici....',
-                parentId: parentId || null
+                content: content || '',
+                parentId: parentId || null  
             });
             state.nextId++;
         },

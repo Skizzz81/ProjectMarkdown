@@ -33,8 +33,8 @@ export default function FileItem({ item, level = 0 }) {
         }
   
 
-
-    const handleClick = () => {
+    const handleClick = (e) => {
+        e.stopPropagation(); 
         if (isFolder) {
             dispatch(toggleFolder(item.id));
         } else {
