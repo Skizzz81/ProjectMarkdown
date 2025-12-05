@@ -1,6 +1,7 @@
 import {createBrowserRouter, RouterProvider}    from 'react-router-dom';
 import Home                                     from './pages/Home';
 import KeyboardShortcutsMenu                    from './pages/KeyboardShortcutsMenu';
+import ImageLibraryPage                         from './pages/ImageLibraryPage';
 import './App.css';
 
 const router = createBrowserRouter([
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
         path: '/keyboard_shortcuts',
         element: <KeyboardShortcutsMenu />,
         errorElement: <div>Error</div>,
+    },
+    {
+        path: '/images',
+        element: <ImageLibraryPage/>,
     },
 ]);
 

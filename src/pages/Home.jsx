@@ -1,32 +1,33 @@
-import { useState, useEffect }  from 'react';
-import FileTree                 from '../components/Sidebar/FileTree';
-import MarkdownEditor           from '../components/Editor/MarkdownEditor';
-import MarkdownPreview          from '../components/Editor/MarkdownPreview';
-import NavBar                   from '../components/NavBar/NavBar';
 
-export default function Home(){
-  // Charger le texte sauvegardé au démarrage
-  const [files, setFiles] = useState(() => {
-    const savedFiles = localStorage.getItem('markdown-files');
-    return savedFiles ? JSON.parse(savedFiles) : [
-      { id: 1, name: "notes.md", content: "content 1 ", type: 'file', parentID: 'null' },
-      { id: 2, name: "todo.md", content: "content 2", type: 'file', parentID: 'null' },
-      { id: 3, name: "ideas.md", content: "content 3", type: 'file', parentID: 'null' }
-    ];
-  });
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import FileTree from '../components/Sidebar/FileTree';
+import Editor from '../components/Editor/Editor';
+import NavBar from '../components/NavBar/NavBar';
+import ImageInsert from '../components/ImageLibrary/ImageInsert';
+import { loadLibraryFromLocalStorage } from '../store/slices/images';
+import { updateFileContent } from '../store/slices/files';
 
-  const [activeFileId, setActiveFileId] = useState(1);
+export default function Home() {
+  const dispatch = useDispatch();
+  // Charger la bibliothèque d'images au démarrage
+  useEffect(() => {
+    dispatch(loadLibraryFromLocalStorage());
+  }, [dispatch]);
 
-  //  trouver le fichier Actif 
-  const activeFile = files.find(file => file.id === activeFileId);
+  // Lire les fichiers 
+  const files = useSelector(state => state.files.list);
+  const activeFileId = useSelector(state => state.files.activeFileId);
 
-  // change contenu du fichier actif 
-  const changeContent = (newContent) => {
-    setFiles(files.map(file => file.id === activeFileId ? { ...file, content: newContent } : file
-    ));
-  }
+  // Insérer une image dans le fichier actif
+  const handleInsertImage = (markdownSyntax) => {
+    const activeFile = files.find(file => file.id === activeFileId);
+    const currentContent = activeFile?.content || '';
+    const newContent = currentContent + '\n' + markdownSyntax;
+    dispatch(updateFileContent({ id: activeFileId, content: newContent }));
+  };
 
-  // Sauvegarder automatiquement à chaque modification
+  // Sauvegarder automatiquement dans localStorage à chaque modification
   useEffect(() => {
     localStorage.setItem('markdown-files', JSON.stringify(files));
   }, [files]);
@@ -38,29 +39,16 @@ export default function Home(){
       </header>
       <main>
         <h1>Éditeur MarkDown</h1>
-
         <div className="app_container">
           <aside className="sidebar">
             <h2>Mes fichiers</h2>
-
-            <FileTree
-              files={files}
-              activeFileId={activeFileId}
-              onFileSelect={setActiveFileId}
-            />
+            <FileTree />
+            <ImageInsert onInsertImage={handleInsertImage} />
           </aside>
-
-          <div className="editor-layout">
-            <div className="editor-container">
-              <MarkdownEditor value={activeFile.content} onChange={changeContent} />
-            </div>
-            <div className="preview-container">
-              <MarkdownPreview text={activeFile.content} />
-            </div>
-          </div>
+          <Editor />
         </div>
       </main>
       <footer></footer>
     </>
   );
-};
+}
