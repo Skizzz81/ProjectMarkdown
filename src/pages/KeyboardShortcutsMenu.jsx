@@ -64,7 +64,7 @@ export default function KeyboardShortcutsMenu(){
                 </aside>
                 <div className="editor-layout">
                     <div className="editor-container">
-                        Raccourci clavier affecté : <strong>{active_shortcut.shortcut}</strong>
+                        <p>Raccourci clavier affecté : <strong>{active_shortcut.shortcut}</strong></p>
                         {active_shortcut_id > default_shortcuts.length && (
                             <a
                                 style   = {{marginLeft: "20px"}}
