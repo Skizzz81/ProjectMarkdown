@@ -68,7 +68,7 @@ const filesSlice = createSlice({
                 name: name,
                 type: 'file',
                 content: content || '',
-                parentId: parentId || null  
+                parentId: parentId || null
             });
             state.nextId++;
         },
@@ -86,16 +86,16 @@ const filesSlice = createSlice({
         },
 
         // Supprimer un item
-         deleteItems: (state, action) => {
+        deleteItems: (state, action) => {
             const id = action.payload;
             const findAllChildren = (id) => {
                 const children = state.list.filter(item => item.parentId === id);
                 return children.flatMap(child => [child.id, ...findAllChildren(child.id)]);
             };
             const idsToDelete = [id, ...findAllChildren(id)];
-          
+
             if (idsToDelete.includes(state.activeFileId)) {
-               alert("Impossible de supprimer le fichier actif !");
+                alert("Impossible de supprimer le fichier actif !");
                 return;
             }
             state.list = state.list.filter(item => !idsToDelete.includes(item.id));
@@ -109,10 +109,21 @@ const filesSlice = createSlice({
                 item.name = newName;
             }
         },
+
+        //deplacer item dans un autre item
+        moveItem: (state, action) => {
+            const { id, newParentId } = action.payload;
+            console.log(id , newParentId);
+            const item = state.list.find(item => item.id === id);
+            if (item) {
+                item.parentId = newParentId;
+            }
+
+        }
     },
 });
 
 
 export { filesSlice };
-export const { setActiveFile, updateFileContent, toggleFolder, addFile, addFolder, deleteItems, renameItems } = filesSlice.actions;
+export const { setActiveFile, updateFileContent, toggleFolder, addFile, addFolder, deleteItems, renameItems , moveItem } = filesSlice.actions;
 export default filesSlice.reducer;

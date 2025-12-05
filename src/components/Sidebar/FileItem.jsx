@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteItems, renameItems, setActiveFile, toggleFolder } from '../../store/slices/files';
+import { deleteItems, renameItems, setActiveFile, toggleFolder, moveItem } from '../../store/slices/files';
 import './FileItem.css';
 
 export default function FileItem({ item, level = 0 }) {
@@ -21,20 +21,29 @@ export default function FileItem({ item, level = 0 }) {
     });
 
 
-    const  handleRenameItem = () => {
+    const handleRenameItem = () => {
         const newName = prompt('Nouveau nom ?', item.name);
         if (newName) {
             dispatch(renameItems({ id: item.id, newName }));
         }
     };
 
-     const  handleDeleteItem = () => {
-            dispatch(deleteItems( item.id ));
+    const handleDeleteItem = () => {
+        dispatch(deleteItems(item.id));
+    }
+
+
+    function hasChildren(parentId, targetId, files) {
+        const children = files.filter(f => f.parentId === parentId);
+        for (const child of children) {
+            if (child.id === targetId) return true;
+            if (hasChildren(child.id, targetId, files)) return true;
         }
-  
+        return false;
+    }
 
     const handleClick = (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
         if (isFolder) {
             dispatch(toggleFolder(item.id));
         } else {
@@ -42,11 +51,28 @@ export default function FileItem({ item, level = 0 }) {
         }
     };
 
+    const handleDragStart = (e) => {
+        e.dataTransfer.setData('itemId', item.id)
+        e.dataTransfer.setData('itemType', item.type)
+
+    }
+
+    const handleDrop = (e) => {
+        const itemId = e.dataTransfer.getData('itemId');
+        if (Number(itemId) === item.id) return;
+        if (hasChildren(Number(itemId), item.id, files)) return;
+        dispatch(moveItem({ id: Number(itemId), newParentId: item.id }));
+    }
+
     return (
         <div>
             <div
                 className={`file-item ${!isFolder && activeFileId === item.id ? 'active' : ''}`}
                 style={{ paddingLeft: `${level * 20}px` }}
+                draggable={true}
+                onDragStart={e => handleDragStart(e)}
+                onDragOver={isFolder ? (e) => e.preventDefault() : undefined}
+                onDrop={isFolder ? (e) => handleDrop(e) : undefined}
             >
                 <span
                     className="file-item-label"
