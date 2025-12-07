@@ -1,7 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import filesReducer from './slices/files';
-import imageReducer from './slices/images';
-import blockReducer from './slices/blocks';
+import filesReducer       from './slices/files';
+import imageReducer       from './slices/images';
+import shortcutsReducer   from './slices/shortcuts';
+import blockReducer       from './slices/blocks';
 
 // Middleware pour sauvegarder automatiquement dans localStorage
 const localStorageMiddleware = (store) => (next) => (action) => {
@@ -30,9 +31,10 @@ const localStorageMiddleware = (store) => (next) => (action) => {
 
 const store = configureStore({
   reducer: {
-    files: filesReducer,
-    images: imageReducer,
-    blocks: blockReducer
+    files:      filesReducer,
+    images:     imageReducer,
+    shortcuts:  shortcutsReducer,
+    blocks:     blockReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(localStorageMiddleware)
