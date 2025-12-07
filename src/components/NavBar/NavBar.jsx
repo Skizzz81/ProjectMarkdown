@@ -7,6 +7,7 @@ export default function NavBar(){
             <span><NavLink to='/'>Éditeur</NavLink></span>
             <span><NavLink to='/keyboard_shortcuts'>Raccourcis clavier</NavLink></span>
             <span><NavLink to='/images'>Bibliothèque d'images</NavLink></span>
+            <span><NavLink to='/blocks'>Bibliothèque de blocs</NavLink></span>
         </nav>
     );
 };

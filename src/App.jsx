@@ -2,6 +2,7 @@ import {createBrowserRouter, RouterProvider}    from 'react-router-dom';
 import Home                                     from './pages/Home';
 import KeyboardShortcutsMenu                    from './pages/KeyboardShortcutsMenu';
 import ImageLibraryPage                         from './pages/ImageLibraryPage';
+import BlockLibraryPage                         from './pages/BlockLibraryPage';
 import './App.css';
 
 const router = createBrowserRouter([
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
     {
         path: '/images',
         element: <ImageLibraryPage/>,
+    },
+    {
+        path: '/blocks',
+        element: <BlockLibraryPage/>,
     },
 ]);
 
