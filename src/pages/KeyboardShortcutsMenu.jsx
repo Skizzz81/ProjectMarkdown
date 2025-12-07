@@ -1,51 +1,56 @@
-import { useState, useEffect }  from 'react';
-import FileTree                 from '../components/Sidebar/FileTree';
-import NavBar                   from '../components/NavBar/NavBar';
-import MarkdownEditor           from '../components/Editor/MarkdownEditor';
-import MarkdownPreview          from '../components/Editor/MarkdownPreview';
-import KeyboardShortcutInput    from '../components/Editor/KeyboardShortcutInput';
+import { useDispatch, useSelector } from 'react-redux';
+import ShortcutTree                 from '../components/Sidebar/ShortcutTree';
+import NavBar                       from '../components/NavBar/NavBar';
+import MarkdownEditor               from '../components/Editor/MarkdownEditor';
+import MarkdownPreview              from '../components/Editor/MarkdownPreview';
+import KeyboardShortcutInput        from '../components/Editor/KeyboardShortcutInput';
+import {
+    setActiveShortcutId,
+    modifyShortcutContent,
+    openEditDialog,
+    closeDialog,
+    addShortcut,
+    updateShortcut
+} from '../store/slices/shortcuts';
 
 export default function KeyboardShortcutsMenu(){
-    // Defining default shortcuts
-    const default_shortcuts = [
-        {id: 1, name: "Bold",       content: "****",    type: 'file',   shortcut: 'Ctrl+B', parentID: 'null'},
-        {id: 2, name: "Italic",     content: "**",      type: 'file',   shortcut: 'Ctrl+I', parentID: 'null'},
-        {id: 3, name: "Title 1",    content: "# ",      type: 'file',   shortcut: 'Ctrl+1', parentID: 'null'}
-    ]
+    const dispatch = useDispatch();
 
-    // Loading the saved shortcuts at startup
-    const [shortcuts, setShortcuts] = useState(() => {
-        const saved_shortcuts = localStorage.getItem('keyboard-shortcuts');
+    // Get state from Redux
+    const shortcuts         = useSelector(state => state.shortcuts.shortcuts);
+    const activeShortcutId  = useSelector(state => state.shortcuts.activeShortcutId);
+    const showDialog        = useSelector(state => state.shortcuts.showDialog);
+    const dialogMode        = useSelector(state => state.shortcuts.dialogMode);
 
-        return [
-            ...default_shortcuts,
-            ...(saved_shortcuts ? JSON.parse(saved_shortcuts) : [])
-        ];
-    });
-    const [active_shortcut_id, setActiveShortcutId] = useState(1);
-    const [show_dialog, setShowDialog]              = useState(false);
+    // Find active shortcut
+    const active_shortcut   = shortcuts.find(file => file.id === activeShortcutId);
 
-    // Finding the active shortcut
-    const active_shortcut = shortcuts.find(file => file.id === active_shortcut_id);
+    // Check if it's a default shortcut
+    const isDefaultShortcut = activeShortcutId <= 3;
 
-    // Modifying the current shortcut
-    const modifyShortcut = (shortcut_content) => {
-        const new_shortcut = {
-            id:         active_shortcut_id,
-            name:       active_shortcut.name,
-            content:    shortcut_content,
-            type:       'file',
-            shortcut:   active_shortcut.shortcut,
-            parentID:   'null'
-        };
-        setShortcuts(shortcuts.map(file => file.id === active_shortcut_id ? new_shortcut : file));
-        setShowDialog(false);
+    // Handle shortcut content modification
+    const handleModifyShortcut = (newContent) => {
+        dispatch(modifyShortcutContent(newContent));
     };
 
-    // Automatically save on every modification
-    useEffect(() => {
-        localStorage.setItem('keyboard-shortcuts', JSON.stringify(shortcuts.slice(default_shortcuts.length)));
-    }, [shortcuts]);
+    // Handle dialog close
+    const handleCloseDialog = () => {
+        dispatch(closeDialog());
+    };
+
+    // Handle adding/updating shortcut
+    const handleSaveShortcut = (shortcutData) => {
+        if (dialogMode === 'add') {
+            dispatch(addShortcut(shortcutData));
+        } else if (dialogMode === 'edit') {
+            dispatch(updateShortcut(shortcutData));
+        }
+    };
+
+    // Handle file selection
+    const handleFileSelect = (fileId) => {
+        dispatch(setActiveShortcutId(fileId));
+    };
 
     return (<>
         <header>
@@ -56,31 +61,36 @@ export default function KeyboardShortcutsMenu(){
             <div className="app_container">
                 <aside className="sidebar">
                     <h2>Mes raccourcis clavier</h2>
-                    <FileTree
+                    <ShortcutTree
                         files           = {shortcuts}
-                        activeFileId    = {active_shortcut_id}
-                        onFileSelect    = {setActiveShortcutId}
+                        activeFileId    = {activeShortcutId}
+                        onFileSelect    = {handleFileSelect}
                     />
                 </aside>
                 <div className="editor-layout">
                     <div className="editor-container">
-                        <p>Raccourci clavier affecté : <strong>{active_shortcut.shortcut}</strong></p>
-                        {active_shortcut_id > default_shortcuts.length && (
+                        <p>Raccourci clavier affecté : <strong>{active_shortcut?.shortcut}</strong></p>
+                        {!isDefaultShortcut && (
                             <a
                                 style   = {{marginLeft: "20px"}}
                                 href    = "#"
-                                onClick = {(e) => {e.preventDefault(); setShowDialog(true);}}
+                                onClick = {(e) => {e.preventDefault(); dispatch(openEditDialog());}}
                             >Modifier</a>
                         )}
-                        <MarkdownEditor value={active_shortcut.content} onChange={modifyShortcut} />
+                        <MarkdownEditor value={active_shortcut?.content} onChange={handleModifyShortcut} />
                     </div>
                     <div className="preview-container">
-                        <MarkdownPreview text={active_shortcut.content} />
+                        <MarkdownPreview text={active_shortcut?.content} />
                     </div>
                 </div>
             </div>
         </main>
         <footer></footer>
-        {show_dialog && <KeyboardShortcutInput onSave={modifyShortcut} onClose={() => setShowDialog(false)} shortcut_data={active_shortcut} />}
+        {showDialog && <KeyboardShortcutInput 
+            onSave={handleSaveShortcut} 
+            onClose={handleCloseDialog}
+            mode={dialogMode}
+            shortcutData={dialogMode === 'edit' ? active_shortcut : null}
+        />}
     </>);
 };
