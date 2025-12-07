@@ -6,6 +6,7 @@ export default function NavBar(){
         <nav>
             <span><NavLink to='/'>Éditeur</NavLink></span>
             <span><NavLink to='/images'>Bibliothèque d'images</NavLink></span>
+            <span><NavLink to='/blocks'>Bibliothèque de blocs</NavLink></span>
         </nav>
     );
 };

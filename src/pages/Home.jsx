@@ -5,14 +5,17 @@ import FileTree from '../components/Sidebar/FileTree';
 import Editor from '../components/Editor/Editor';
 import NavBar from '../components/NavBar/NavBar';
 import ImageInsert from '../components/ImageLibrary/ImageInsert';
+import BlockInsert from '../components/BlockLibrary/BlockInsert';
 import { loadLibraryFromLocalStorage } from '../store/slices/images';
+import { loadLibraryFromLocalStorage as loadBlocksFromLocalStorage } from '../store/slices/blocks';
 import { updateFileContent } from '../store/slices/files';
 
 export default function Home() {
   const dispatch = useDispatch();
-  // Charger la bibliothèque d'images au démarrage
+  // Charger la bibliothèque d'images et de blocs au démarrage
   useEffect(() => {
     dispatch(loadLibraryFromLocalStorage());
+    dispatch(loadBlocksFromLocalStorage());
   }, [dispatch]);
 
   // Lire les fichiers 
@@ -24,6 +27,14 @@ export default function Home() {
     const activeFile = files.find(file => file.id === activeFileId);
     const currentContent = activeFile?.content || '';
     const newContent = currentContent + '\n' + markdownSyntax;
+    dispatch(updateFileContent({ id: activeFileId, content: newContent }));
+  };
+
+  // Insérer un bloc dans le fichier actif
+  const handleInsertBlock = (blockContent) => {
+    const activeFile = files.find(file => file.id === activeFileId);
+    const currentContent = activeFile?.content || '';
+    const newContent = currentContent + '\n' + blockContent;
     dispatch(updateFileContent({ id: activeFileId, content: newContent }));
   };
 
@@ -44,6 +55,7 @@ export default function Home() {
             <h2>Mes fichiers</h2>
             <FileTree />
             <ImageInsert onInsertImage={handleInsertImage} />
+            <BlockInsert onInsert={handleInsertBlock} />
           </aside>
           <Editor />
         </div>

@@ -1,0 +1,111 @@
+.block-insert {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  overflow-y: auto;
+}
+
+.block-insert h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #333;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 8px;
+}
+
+.shortcut-input-group {
+  margin-bottom: 16px;
+}
+
+.shortcut-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.shortcut-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.shortcut-input::placeholder {
+  color: #aaa;
+  font-size: 13px;
+}
+
+.no-blocks {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  padding: 20px;
+}
+
+.blocks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.block-item {
+  background: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 12px;
+  transition: all 0.2s;
+}
+
+.block-item:hover {
+  background: #f0f0f0;
+  border-color: #667eea;
+}
+
+.block-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.block-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.block-shortcut-tag {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.insert-btn {
+  width: 100%;
+  padding: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.insert-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
